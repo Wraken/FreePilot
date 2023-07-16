@@ -1,17 +1,26 @@
 from transformers import AutoModelForCausalLM
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer, AutoConfig
 import torch
 import time
+
+# loac config
+config = AutoConfig.from_pretrained(
+    "replit/replit-code-v1-3b",
+    trust_remote_code=True,
+    low_cpu_mem_usage=True
+)
+config.attn_config['attn_impl'] = 'torch'
 
 # load model
 model = AutoModelForCausalLM.from_pretrained('replit/replit-code-v1-3b',
                                             trust_remote_code=True,
-                                            low_cpu_mem_usage=True,
+                                            config=config,
                                             ).to(device='cuda:0', dtype=torch.bfloat16)
 
 # load tokenizer
 tokenizer = AutoTokenizer.from_pretrained('replit/replit-code-v1-3b', trust_remote_code=True)
 
+time.sleep(10)
 # start_time = time.time()
 
 # x = tokenizer.encode('def fibonacci(n): ', return_tensors='pt')
@@ -41,12 +50,13 @@ start_time = time.time()
 inputs = tokenizer.encode(prompt, return_tensors='pt').to(device='cuda:0')
 print(inputs, inputs.size(), inputs.size(dim=1))
 
-outputs = model.generate(inputs, do_sample=False, num_beams=6, num_beam_groups=2,max_length=100, top_p=0.95, top_k=4, temperature=0.2, num_return_sequences=4, eos_token_id=tokenizer.eos_token_id, pad_token_id=tokenizer.pad_token_id)
+outputs = model.generate(inputs, do_sample=True, max_length=100, top_p=0.95, top_k=4, temperature=0.2, num_return_sequences=1, eos_token_id=tokenizer.eos_token_id, pad_token_id=tokenizer.pad_token_id)
+print("prout")
+prompt_len = inputs.size(dim=1)
+print(prompt_len)
+output_lens = [len(o)-prompt_len for o in outputs]
+print(output_lens)
+decoded = tokenizer.batch_decode([out[prompt_len:prompt_len + g] for g,out in zip(output_lens, outputs)])
 
-prompt_len = len(prompt)
-decoded = tokenizer.batch_decode(outputs)
-
-print("go")
-print("--- %s seconds ---" % (time.time() - start_time))
-for i, d in enumerate(decoded):
-    print(i, d)
+for i,d in enumerate(decoded):
+    print(i,d)
