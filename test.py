@@ -9,7 +9,7 @@ config = AutoConfig.from_pretrained(
     trust_remote_code=True,
     low_cpu_mem_usage=True
 )
-config.attn_config['attn_impl'] = 'torch'
+config.attn_config['attn_impl'] = 'triton'
 
 # load model
 model = AutoModelForCausalLM.from_pretrained('replit/replit-code-v1-3b',

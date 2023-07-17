@@ -13,25 +13,25 @@ from pydantic import BaseModel, constr
 
 logging.config.dictConfig(uvicorn_logger)
 
-ModelType = constr(regex="^(fastertransformer|py-model)$")
+ModelType = constr(pattern="^(fastertransformer|py-model)$")
 
 class OpenAIinput(BaseModel):
     model: ModelType = "fastertransformer"
     prompt: Optional[str]
-    suffix: Optional[str]
+    suffix: Optional[str] = None
     max_tokens: Optional[int] = 16
-    temperature: Optional[float] = 0.6
+    temperature: Optional[float] = 1.0
     top_p: Optional[float] = 1.0
     n: Optional[int] = 1
-    stream: Optional[bool]
+    stream: Optional[bool] = False
     logprobs: Optional[int] = None
-    echo: Optional[bool]
-    stop: Optional[Union[str, list]]
-    presence_penalty: Optional[float] = 0
-    frequency_penalty: Optional[float] = 1
+    echo: Optional[bool] = False
+    stop: Optional[Union[str, list]] = None
+    presence_penalty: Optional[float] = 0.0
+    frequency_penalty: Optional[float] = 1.0
     best_of: Optional[int] = 1
-    logit_bias: Optional[dict]
-    user: Optional[str]
+    logit_bias: Optional[dict] = None
+    user: Optional[str] = ""
 
 codegen = CodeGen()
 
@@ -67,7 +67,7 @@ async def completions(data: OpenAIinput):
             code=None,
         )
 
-    if data.get("stream") is not None:
+    if data.get("stream") is not False:
         return EventSourceResponse(
             content=content,
             status_code=200,
