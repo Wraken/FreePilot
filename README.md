@@ -1,4 +1,4 @@
-# Foobar
+# FreePilot
 
 FreePilot is an attempt to create an homemade github copilot API.
 
