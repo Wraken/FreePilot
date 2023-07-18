@@ -13,7 +13,7 @@ from pydantic import BaseModel, constr
 
 logging.config.dictConfig(uvicorn_logger)
 
-ModelType = constr(pattern="^(fastertransformer|py-model)$")
+ModelType = constr(regex="^(fastertransformer|py-model)$")
 
 class OpenAIinput(BaseModel):
     model: ModelType = "fastertransformer"

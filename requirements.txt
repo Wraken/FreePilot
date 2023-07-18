@@ -1,0 +1,10 @@
+fastapi==0.82.0
+numpy==1.23.2
+sse-starlette==1.1.6
+tokenizers==0.12.1
+uvicorn==0.18.3
+transformers==4.30.2
+accelerate==0.21.0
+einops
+sentencepiece
+torch
