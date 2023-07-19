@@ -1,6 +1,9 @@
 # FreePilot
 
 FreePilot is an attempt to create an homemade github copilot API.
+Compatible with HuggingFace models
+
+Inspired a lot by [fauxpilot](https://github.com/fauxpilot/fauxpilot)
 
 ## Installation
 
@@ -10,6 +13,12 @@ cd FreePilot
 docker build -t freepilot .
 docker run --gpus all -p 5000:5000 freepilot
 ```
+or
+```bash
+docker pull wrakenwastaken/freepilot:1.0.0
+docker run --gpus all -p 5000:5000 freepilot
+```
+
 
 ## Usage
 If the docker container is running you can test it with :
@@ -27,8 +36,9 @@ Replace this :
 
 Don't forget to disable auto update of github copilot extension
 
+If the `extension.js` doesn't contain endpoints to replace, you should try on older extension version.
 
-Add this to vscode `settings.json`
+And add this to vscode `settings.json`
 
 ```json
 "github.copilot.advanced": {
