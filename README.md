@@ -34,9 +34,9 @@ Replace this :
 - api.github.com/copilot_internal -> http://127.0.0.1:5000/copilot_internal
 - copilot-proxy.githubusercontent.com -> http://127.0.0.1:5000
 
-Don't forget to disable auto update of github copilot extension
+Don't forget to disable auto update of github copilot extension.
 
-If the `extension.js` doesn't contain endpoints to replace, you should try on older extension version.
+If the `extension.js` doesn't contain endpoints to replace, you should try an older extension version.
 
 And add this to vscode `settings.json`
 
